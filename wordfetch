@@ -1,0 +1,56 @@
+#!/bin/bash
+
+GREEN='\033[1;32m'
+WHITE='\033[1;37m'
+CYAN='\033[1;36m'
+RESET='\033[0m'
+
+# Detect Linux
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS="$PRETTY_NAME"
+else
+    OS="Unknown Linux"
+fi
+
+HOST=$(hostname)
+KERNEL=$(uname -r)
+ARCH=$(uname -m)
+SHELL_NAME=$(basename "${SHELL:-/bin/sh}")
+DE=${XDG_CURRENT_DESKTOP:-${DESKTOP_SESSION:-Unknown}}
+TERM_NAME=${TERM:-Unknown}
+
+CPU=$(awk -F ': ' '/model name|Hardware/ {print $2; exit}' /proc/cpuinfo 2>/dev/null)
+CPU=${CPU:-$ARCH}
+
+RAM=$(free -h 2>/dev/null | awk '/^Mem:/ {print $3 " / " $2}')
+RAM=${RAM:-Unavailable}
+
+echo -e "${GREEN}"
+cat << "EOF"
+       .--.
+      |o_o |
+      |:_/ |
+     //   \ \
+    (|     | )
+   /'\_   _/`\
+   \___)=(___/
+EOF
+
+echo -e "${RESET}"
+
+echo -e "${GREEN}${USER:-user}@$HOST${RESET}"
+echo "------------------------------"
+
+echo -e "${WHITE}OS:${RESET} $OS"
+echo -e "${WHITE}Host:${RESET} $HOST"
+echo -e "${WHITE}Kernel:${RESET} $KERNEL"
+echo -e "${WHITE}Architecture:${RESET} $ARCH"
+echo -e "${WHITE}Desktop:${RESET} $DE"
+echo -e "${WHITE}Shell:${RESET} $SHELL_NAME"
+echo -e "${WHITE}Terminal:${RESET} $TERM_NAME"
+echo -e "${WHITE}CPU:${RESET} $CPU"
+echo -e "${WHITE}Memory:${RESET} $RAM"
+
+echo
+echo -e "${CYAN}Powered by Wordfetch${RESET}"
