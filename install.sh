@@ -22,9 +22,7 @@ echo "Error: curl is required."
 exit 1
 fi
 
-curl -fsSL 
-"https://raw.githubusercontent.com/$REPO/$BRANCH/wordfetch" 
--o "$TEMP_FILE"
+curl -fsSL "https://raw.githubusercontent.com/$REPO/$BRANCH/wordfetch" -o "$TEMP_FILE"
 
 install -m 755 "$TEMP_FILE" "$INSTALL_DIR/wordfetch"
 
